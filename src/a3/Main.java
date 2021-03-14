@@ -16,9 +16,13 @@ public class Main {
          */
         BST bst = new BSTImpl();
         bst.insert("hello");
-        bst.insert("world");
-        bst.insert("comp210");
-        System.out.println(bst.getRoot().getValue());
+        bst.insert("atlanta");
+        bst.insert("banana");
+        bst.insert("vrinda");
+        bst.insert("reema");
+        bst.insert("abashed");
+        bst.insert("dax");
+        bst.show();
 
     }
 }

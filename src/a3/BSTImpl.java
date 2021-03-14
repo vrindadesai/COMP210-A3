@@ -44,7 +44,36 @@ public class BSTImpl implements BST {
     }
 
     @Override
-    public String insert(String value) { return null; }
+    public String insert(String value) {
+        if (this.root == null) { //if the BST is completely empty, create a root to start
+            this.root = new NodeImpl(value);
+        }
+        else { //if it is not empty, we'll compare values
+            insert_value(value, this.root); //first recursive step beginning at head
+        }
+        size++;
+        return value; //returns value string when all recursion is finished
+    }
+    private Node insert_value(String value, Node node) { //the recursive helper function for insert
+        int lexiCounter = value.compareTo(node.getValue()); //finds lexographic difference
+        if (lexiCounter < 0) { //if lexi value is less than root
+            if (node.getLeft() == null){
+                node.setLeft(new NodeImpl(value));
+            }
+            else {
+                insert_value(value, node.getLeft());
+            }
+        }
+        if (lexiCounter > 0) { //if lexi value is more than root
+            if (node.getRight() == null){
+                node.setRight(new NodeImpl(value));
+            }
+            else {
+                insert_value(value, node.getRight());
+            }
+        }
+        return null;
+    }
 
     // remove implementation given to you, do NOT change
     @Override
@@ -87,7 +116,7 @@ public class BSTImpl implements BST {
     private Node maxCell(Node c) { // this is used in remove too
         if (c.getRight()==null) return c;
         return maxCell(c.getRight());
-    } ;
+    }
 
     @Override
     public boolean isFull() {
@@ -118,4 +147,31 @@ public class BSTImpl implements BST {
     public int size() {
         return this.size;
     }
+
+    @Override
+    public void show() {
+        int off=4;
+        int lev=0;
+        for (int k=0; k<10; k++) {
+            System.out.print("+");
+            for (int kk=0; kk<off-1; kk++) {System.out.print("-");}
+        }
+        System.out.println("+");
+        show_r(this.root,lev,off);
+        for (int k=0; k<10; k++){
+            System.out.print("+");
+            for (int kk=0; kk<off-1; kk++) {System.out.print("-");}
+        }
+        System.out.println("+");
+    }
+    private void show_r(Node n, int lev, int off) {
+        if (n==null) return;
+        show_r(n.getRight(), lev+off, off);
+        for (int b=0; b<lev; b++) {System.out.print(" ");}
+        System.out.println(n.getValue());
+        show_r(n.getLeft(),lev+off, off);
+    }
+
+
 }
+

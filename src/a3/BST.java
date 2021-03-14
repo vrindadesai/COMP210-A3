@@ -69,6 +69,7 @@ public interface BST {
      * @return Node containing the string
      */
     Node get(String s);
+
     /**
      * Returns the number of elements in the tree.
      *
@@ -76,7 +77,6 @@ public interface BST {
      */
     int size();
 
-
-
-
+    void show();
 }
+
