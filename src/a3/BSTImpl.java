@@ -49,19 +49,19 @@ public class BSTImpl implements BST {
             this.root = new NodeImpl(value);
         }
         else { //if it is not empty, we'll compare values
-            insert_value(value, this.root); //first recursive step beginning at head
+            recurseInsert(value, this.root); //first recursive step beginning at head
         }
         size++;
         return value; //returns value string when all recursion is finished
     }
-    private Node insert_value(String value, Node node) { //the recursive helper function for insert
+    private Node recurseInsert(String value, Node node) { //the recursive helper function for insert
         int lexiCounter = value.compareTo(node.getValue()); //finds lexographic difference
         if (lexiCounter < 0) { //if lexi value is less than root
             if (node.getLeft() == null){
                 node.setLeft(new NodeImpl(value));
             }
             else {
-                insert_value(value, node.getLeft());
+                recurseInsert(value, node.getLeft());
             }
         }
         if (lexiCounter > 0) { //if lexi value is more than root
@@ -69,7 +69,7 @@ public class BSTImpl implements BST {
                 node.setRight(new NodeImpl(value));
             }
             else {
-                insert_value(value, node.getRight());
+                recurseInsert(value, node.getRight());
             }
         }
         return null;
@@ -120,17 +120,115 @@ public class BSTImpl implements BST {
 
     @Override
     public boolean isFull() {
+        if (this.root == null) {
+            return true; //Should an empty tree be T or F?
+        }
+        if (this.size == 0) {
+            return true; //A tree with only a root
+        }
+        return recurseIsFull(this.root.getLeft(), this.root.getRight());
+    }
+
+    private boolean recurseIsFull(Node nodeLeft, Node nodeRight) {
+        if (nodeStatus(nodeLeft) == "missing Child" || nodeStatus(nodeRight) == "missing Child") {
+            return false;
+        }
+        if (nodeStatus(nodeLeft) == "0 Child" && nodeStatus(nodeRight) == "0 Child") {
+            return true;
+        }
+        if (nodeStatus(nodeLeft) == "2 Child" && nodeStatus(nodeRight) == "0 Child") {
+            return recurseIsFull(nodeLeft.getLeft(), nodeLeft.getRight());
+        }
+        if (nodeStatus(nodeLeft) == "0 Child" && nodeStatus(nodeRight) == "2 Child") {
+            return recurseIsFull(nodeRight.getLeft(), nodeRight.getRight());
+        }
+        if (nodeStatus(nodeLeft) == "2 Child" && nodeStatus(nodeRight) == "2 Child") {
+            if (recurseIsFull(nodeLeft.getLeft(), nodeLeft.getRight()) == true) {
+                return recurseIsFull(nodeRight.getLeft(), nodeRight.getRight());
+            }
+            else {
+                return false;
+            }
+        }
         return false;
     }
 
+    private boolean hasLeft(Node node) {
+        if (node.getLeft() == null) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    private boolean hasRight(Node node) {
+        if (node.getRight() == null) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    private String nodeStatus(Node node) {
+        //There is a child missing either right or left--not full
+        if (hasRight(node) == false && hasLeft(node) == true) {
+            return "missing Child";
+        }
+        if (hasRight(node) == true && hasLeft(node) == false) {
+            return "missing Child";
+        }
+        //There are no children--considered full
+        if (hasRight(node) == false && hasLeft(node) == false) {
+            return "0 Child";
+        }
+        //There are both right and left node--considered full
+        if (hasRight(node) == true && hasLeft(node) == true) {
+            return "2 Child";
+        }
+        return null;
+    }
+
+
     @Override
     public String findMin() {
-        return null;
+        if (this.root == null) {
+            return null;
+        }
+        if (this.size == 0) {
+            return this.root.getValue();
+        }
+        return recurseMin(this.root);
+    }
+
+    private String recurseMin(Node node) {
+        if (node.getLeft() == null){
+            return node.getValue();
+        }
+        else {
+            return recurseMin(node.getLeft());
+        }
     }
 
     @Override
     public String findMax() {
-        return null;
+        if (this.root == null) {
+            return null;
+        }
+        if (this.size == 0) {
+            return this.root.getValue();
+        }
+        return recurseMax(this.root);
+    }
+
+    private String recurseMax(Node node) {
+        if (node.getRight() == null){
+            return node.getValue();
+        }
+        else {
+            return recurseMax(node.getRight());
+        }
     }
 
     @Override

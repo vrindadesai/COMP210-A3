@@ -21,8 +21,8 @@ public class Main {
         bst.insert("vrinda");
         bst.insert("reema");
         bst.insert("abashed");
-        bst.insert("dax");
+        bst.insert("zebra");
         bst.show();
-
+        System.out.println(bst.isFull());
     }
 }
