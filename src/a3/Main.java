@@ -23,7 +23,8 @@ public class Main {
         bst.insert("sleep");
         bst.insert("pajamas");
         bst.insert("vrinda");
+        bst.insert("reema");
         bst.show();
-        System.out.println(bst.contains("pajamas"));
+        System.out.println(bst.contains("reema"));
     }
 }

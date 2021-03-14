@@ -235,42 +235,46 @@ public class BSTImpl implements BST {
 
     @Override
     public boolean contains(String value) {
-        if (this.root == null) { // If the BST is empty, return false
+        if (this.root == null) {
             return false;
         }
-        if (this.root.getValue() == value) {
-            return true;
-        }
-        if (nodeStatus(this.root) == "O Child") {
-            return false;
-        }
-        return recurseContains(this.root.getLeft(), this.root.getRight(), value);
+        return recurseContains(this.root, value);
     }
 
-    private boolean recurseContains(Node nodeLeft, Node nodeRight, String value) {
-        if (nodeLeft.getValue() == value || nodeRight.getValue() == value) {
+    private boolean recurseContains(Node node, String value) {
+        if (hasValue(node, value)) {
             return true;
         }
-        if (nodeStatus(nodeLeft) == "0 Child" && nodeStatus(nodeRight) == "0 Child") {
+        if (nodeStatus(node) == "0 Child") {
             return false;
         }
-        if (nodeStatus(nodeLeft) == "2 Child" && nodeStatus(nodeRight) == "0 Child") {
-            return recurseContains(nodeLeft.getLeft(), nodeLeft.getRight(), value);
+        if (hasLeft(node) && !hasRight(node)) {
+            return recurseContains(node.getLeft(), value);
         }
-        if (nodeStatus(nodeLeft) == "0 Child" && nodeStatus(nodeRight) == "2 Child") {
-            return recurseContains(nodeRight.getLeft(), nodeRight.getRight(), value);
+        if (!hasLeft(node) && hasRight(node)) {
+            return recurseContains(node.getRight(), value);
         }
-
-        if (nodeStatus(nodeLeft) == "2 Child" && nodeStatus(nodeRight) == "2 Child") {
-            if (recurseContains(nodeLeft.getLeft(), nodeLeft.getRight(), value) == true) {
-                return true;
+        if (nodeStatus(node) == "2 Child") {
+            if (!recurseContains(node.getLeft(), value)) {
+                return recurseContains(node.getRight(), value);
             }
             else {
-                return recurseContains(nodeRight.getLeft(), nodeRight.getRight(), value);
+                return true;
             }
         }
+        System.out.print("issue");
         return false;
     }
+
+    private boolean hasValue(Node node, String value) {
+        if (node.getValue() == value) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
 
     @Override
     public Node get(String s) {
