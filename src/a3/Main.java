@@ -16,13 +16,14 @@ public class Main {
          */
         BST bst = new BSTImpl();
         bst.insert("hello");
-        bst.insert("atlanta");
-        bst.insert("banana");
-        bst.insert("vrinda");
-        bst.insert("reema");
-        bst.insert("abashed");
+        bst.insert("cake");
+        bst.insert("baby");
+        bst.insert("dax");
         bst.insert("zebra");
+        bst.insert("sleep");
+        bst.insert("pajamas");
+        bst.insert("vrinda");
         bst.show();
-        System.out.println(bst.isFull());
+        System.out.println(bst.contains("pajamas"));
     }
 }

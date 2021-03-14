@@ -123,8 +123,11 @@ public class BSTImpl implements BST {
         if (this.root == null) {
             return true; //Should an empty tree be T or F?
         }
-        if (this.size == 0) {
+        if (nodeStatus(this.root) == "0 Child") {
             return true; //A tree with only a root
+        }
+        if (nodeStatus(this.root) == "missing Child") {
+            return false;
         }
         return recurseIsFull(this.root.getLeft(), this.root.getRight());
     }
@@ -190,13 +193,12 @@ public class BSTImpl implements BST {
         return null;
     }
 
-
     @Override
     public String findMin() {
         if (this.root == null) {
             return null;
         }
-        if (this.size == 0) {
+        if (nodeStatus(this.root) == "0 Child") {
             return this.root.getValue();
         }
         return recurseMin(this.root);
@@ -216,7 +218,7 @@ public class BSTImpl implements BST {
         if (this.root == null) {
             return null;
         }
-        if (this.size == 0) {
+        if (nodeStatus(this.root) == "0 Child") {
             return this.root.getValue();
         }
         return recurseMax(this.root);
@@ -232,7 +234,41 @@ public class BSTImpl implements BST {
     }
 
     @Override
-    public boolean contains(String s) {
+    public boolean contains(String value) {
+        if (this.root == null) { // If the BST is empty, return false
+            return false;
+        }
+        if (this.root.getValue() == value) {
+            return true;
+        }
+        if (nodeStatus(this.root) == "O Child") {
+            return false;
+        }
+        return recurseContains(this.root.getLeft(), this.root.getRight(), value);
+    }
+
+    private boolean recurseContains(Node nodeLeft, Node nodeRight, String value) {
+        if (nodeLeft.getValue() == value || nodeRight.getValue() == value) {
+            return true;
+        }
+        if (nodeStatus(nodeLeft) == "0 Child" && nodeStatus(nodeRight) == "0 Child") {
+            return false;
+        }
+        if (nodeStatus(nodeLeft) == "2 Child" && nodeStatus(nodeRight) == "0 Child") {
+            return recurseContains(nodeLeft.getLeft(), nodeLeft.getRight(), value);
+        }
+        if (nodeStatus(nodeLeft) == "0 Child" && nodeStatus(nodeRight) == "2 Child") {
+            return recurseContains(nodeRight.getLeft(), nodeRight.getRight(), value);
+        }
+
+        if (nodeStatus(nodeLeft) == "2 Child" && nodeStatus(nodeRight) == "2 Child") {
+            if (recurseContains(nodeLeft.getLeft(), nodeLeft.getRight(), value) == true) {
+                return true;
+            }
+            else {
+                return recurseContains(nodeRight.getLeft(), nodeRight.getRight(), value);
+            }
+        }
         return false;
     }
 
