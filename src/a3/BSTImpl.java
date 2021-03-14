@@ -262,7 +262,6 @@ public class BSTImpl implements BST {
                 return true;
             }
         }
-        System.out.print("issue");
         return false;
     }
 
@@ -275,10 +274,39 @@ public class BSTImpl implements BST {
         }
     }
 
-
     @Override
-    public Node get(String s) {
-        return null;
+    public Node get(String value) {
+        if (this.root == null) {
+            return null;
+        }
+       if (!this.contains(value)) {
+           return null;
+       }
+       return recurseGet(this.root, value);
+    }
+
+    private Node recurseGet(Node node, String value) {
+        if (hasValue(node, value)) {
+            return node;
+        }
+        if (nodeStatus(node) == "0 Child") {
+            return null;
+        }
+        if (hasLeft(node) && !hasRight(node)) {
+            return recurseGet(node.getLeft(), value);
+        }
+        if (!hasLeft(node) && hasRight(node)) {
+            return recurseGet(node.getRight(), value);
+        }
+        if (nodeStatus(node) == "2 Child") {
+            if (recurseGet(node.getLeft(), value) == null) {
+                return recurseGet(node.getRight(), value);
+            } else {
+                return recurseGet(node.getLeft(), value);
+            }
+        }
+        System.out.print("error");
+        return node;
     }
 
     @Override

@@ -25,6 +25,6 @@ public class Main {
         bst.insert("vrinda");
         bst.insert("reema");
         bst.show();
-        System.out.println(bst.contains("reema"));
+        System.out.println(bst.get("bobby"));
     }
 }
